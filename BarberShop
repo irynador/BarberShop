@@ -1,0 +1,38 @@
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.concurrent.Semaphore;
+
+/**
+ * Created by Iryna on 6/1/2015.
+ */
+public class BarberShop extends Thread{
+
+    public static Semaphore barberReady = new Semaphore(0);
+    public static Semaphore accessWRSeats = new Semaphore(1);
+    public static Semaphore customerReady = new Semaphore(0);
+
+    public static final int CHAIRS = 5;
+
+    public static int numberOfFreeWRSeats = CHAIRS;
+
+    public static void main(String args[]) {
+
+        BarberShop barberShop = new BarberShop();  //Creates a new barbershop
+        barberShop.start();  // Let the simulation begin
+    }
+
+    public void run(){
+        Barber giovanni = new Barber();  //Giovanni is the best barber ever
+        giovanni.start();  //Ready for another day of work
+
+   /* This method will create new customers for a while */
+
+        for (int i=1; i<16; i++) {
+            Customer aCustomer = new Customer(i);
+            aCustomer.start();
+            try {
+                sleep(2000);
+            } catch(InterruptedException ex) {};
+        }
+    }
+}
