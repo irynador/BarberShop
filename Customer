@@ -1,0 +1,51 @@
+import com.company.Barber;
+import com.company.BarberShop;
+
+
+/**
+ * Created by Iryna on 6/1/2015.
+ */
+public class Customer extends Thread {
+
+    int id;
+    boolean isNotCut = true;
+
+    public Customer (int id){
+        this.id = id;
+    }
+
+    public int getCustomerId() {
+        return id;
+    }
+    public void run(){
+        while (isNotCut) {  // as long as the customer is not cut
+            try {
+                BarberShop.accessWRSeats.acquire();  //tries to get access to the chairs
+                if (BarberShop.numberOfFreeWRSeats > 0) {  //if there are any free seats
+                    System.out.println("Customer " + this.id + " just sat down.");
+                    BarberShop.numberOfFreeWRSeats--;  //sitting down on a chair
+                    BarberShop.customerReady.release();  //notify the barber that there is a customer
+                    BarberShop.accessWRSeats.release();  // don't need to lock the chairs anymore
+                    try {
+                        BarberShop.barberReady.acquire();  // now it's this customers turn but we have to wait if the barber is busy
+                        isNotCut = false;  // this customer will now leave after the procedure
+                        this.get_haircut();  //cutting...
+                    } catch (InterruptedException ex) {}
+                }
+                else  {  // there are no free seats
+                    System.out.println("There are no free seats. Customer " + this.id + " has left the barbershop.");
+                    BarberShop.accessWRSeats.release();  //release the lock on the seats
+                    isNotCut = false; // the customer will leave since there are no spots in the queue left.
+                }
+            }
+            catch (InterruptedException ex) {}
+        }
+    }
+    public void get_haircut(){
+        System.out.println("Customer " + this.id + " is getting his hair cut");
+        try {
+            sleep(5050);
+        } catch (InterruptedException ex) {}
+    }
+
+}
