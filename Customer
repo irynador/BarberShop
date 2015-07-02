@@ -18,7 +18,7 @@ public class Customer extends Thread {
         return id;
     }
     public void run(){
-        while (isNotCut) {  // as long as the customer is not cut
+        while (isNotCut) {  
             try {
                 BarberShop.accessWRSeats.acquire();  //tries to get access to the chairs
                 if (BarberShop.numberOfFreeWRSeats > 0) {  //if there are any free seats
@@ -29,7 +29,7 @@ public class Customer extends Thread {
                     try {
                         BarberShop.barberReady.acquire();  // now it's this customers turn but we have to wait if the barber is busy
                         isNotCut = false;  // this customer will now leave after the procedure
-                        this.get_haircut();  //cutting...
+                        this.get_haircut();  //cutting
                     } catch (InterruptedException ex) {}
                 }
                 else  {  // there are no free seats
