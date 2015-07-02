@@ -25,7 +25,7 @@ public class BarberShop extends Thread{
         Barber barber = new Barber();  
         barber.start();  //Ready for another day of work
 
-   /* This method will create new customers for a while */
+   /* Creating new customers */
 
         for (int i=1; i<16; i++) {
             Customer aCustomer = new Customer(i);
