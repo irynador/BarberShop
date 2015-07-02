@@ -17,8 +17,8 @@ public class BarberShop extends Thread{
 
     public static void main(String args[]) {
 
-        BarberShop barberShop = new BarberShop();  //Creates a new barbershop
-        barberShop.start();  // Let the simulation begin
+        BarberShop barberShop = new BarberShop(); 
+        barberShop.start(); 
     }
 
     public void run(){
