@@ -22,8 +22,8 @@ public class BarberShop extends Thread{
     }
 
     public void run(){
-        Barber giovanni = new Barber();  //Giovanni is the best barber ever
-        giovanni.start();  //Ready for another day of work
+        Barber barber = new Barber();  
+        barber.start();  //Ready for another day of work
 
    /* This method will create new customers for a while */
 
